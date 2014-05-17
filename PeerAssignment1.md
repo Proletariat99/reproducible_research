@@ -1,33 +1,69 @@
-Title
+Reproducible Research - Peer Assignment 1
 ========================================================
 
-This is an R Markdown document. Markdown is a simple formatting syntax for authoring web pages (click the **Help** toolbar button for more details on using R Markdown).
-
-When you click the **Knit HTML** button a web page will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
-
-
-```r
-summary(cars)
-```
-
-```
-##      speed           dist    
-##  Min.   : 4.0   Min.   :  2  
-##  1st Qu.:12.0   1st Qu.: 26  
-##  Median :15.0   Median : 36  
-##  Mean   :15.4   Mean   : 43  
-##  3rd Qu.:19.0   3rd Qu.: 56  
-##  Max.   :25.0   Max.   :120
-```
-
-
-You can also embed plots, for example:
+Reading and Cleaning Data
+---------
+This code grabs the file and gets rid of incomplete records (i.e. records with any N/A values)
 
 
 ```r
-plot(cars)
+setwd("~/Google Drive/dev/R/coursera/reproducible_research/")
+activity_filename <- "./data/activity.csv"
+act <- read.csv(activity_filename)
+act2 <- act[complete.cases(act), ]
+act3 <- split(act2, act2$date, drop = TRUE)
+head(act2)
+```
+
+```
+##     steps       date interval
+## 289     0 2012-10-02        0
+## 290     0 2012-10-02        5
+## 291     0 2012-10-02       10
+## 292     0 2012-10-02       15
+## 293     0 2012-10-02       20
+## 294     0 2012-10-02       25
+```
+
+
+Daily Mean
+------------
+This code calculates the mean # of steps taken per day by taking the split data sets and looping over them to sum the steps per day and then append to a list, then take the mean & median of the list
+
+
+
+```r
+daily_steps <- vector()
+for (date in act3) {
+    daily_steps <- append(daily_steps, as.numeric(sum(date$steps)))
+}
+myhist <- hist(daily_steps)
 ```
 
 ![plot of chunk unnamed-chunk-2](figure/unnamed-chunk-2.png) 
+
+```r
+daily_mean <- mean(daily_steps)
+daily_median <- median(daily_steps)
+print(paste("mean steps daily is ", as.character(daily_mean)))
+```
+
+```
+## [1] "mean steps daily is  10766.1886792453"
+```
+
+```r
+print(paste("median of daily steps is ", as.character(daily_median)))
+```
+
+```
+## [1] "median of daily steps is  10765"
+```
+
+
+# ```{r fig.width=7, fig.height=6}
+# plot(myhist)
+# ```
+
 
 
