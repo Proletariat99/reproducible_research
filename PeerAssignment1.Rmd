@@ -30,10 +30,36 @@ daily_median <- median(daily_steps)
 print(paste("mean steps daily is ", as.character(daily_mean)))
 print(paste("median of daily steps is ", as.character(daily_median)))
 ```
+Interval Steps
+------------
+And now we're apparently plotting the total number of steps across all days by interval:
+```{r fig.width=7, fig.height=6}
+act4 <- split(act2, act2$interval, drop=TRUE)
 
-# ```{r fig.width=7, fig.height=6}
-# plot(myhist)
-# ```
+interval_steps <- vector()
+for(interval in act4){
+  interval_steps <- append(interval_steps, sum(interval$steps))
+}
+
+plot(interval_steps, type="l")
+
+print(paste("The interval with the most steps is interval #", as.character(which.max(interval_steps))))
+
+```
+
+Inputing Missing Values
+-----------------
+Calculating the total # of complete cases - the total # of cases:
+```{r}
+total_count <- length(act$date)
+temp <- act[complete.cases(act),]
+complete_count <- length(temp$date)
+no_of_na <- total_count - complete_count
+print(no_of_na)
+act5 <- act() # with missing values filled back in 
+
+```
+
 
 
 

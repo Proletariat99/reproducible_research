@@ -13,3 +13,14 @@ daily_mean <- mean(daily_steps)
 daily_median <- median(daily_steps)
 print(daily_mean)
 print(daily_median)
+
+hist(daily_steps)
+
+act4 <- split(act2, act2$interval, drop=TRUE)
+
+interval_steps <- vector()
+for(interval in act4){
+  interval_steps <- append(interval_steps, sum(interval$steps))
+}
+
+plot(interval_steps, type="l")
